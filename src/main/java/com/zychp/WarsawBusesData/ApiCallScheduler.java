@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.*;
 
 @Component
 public class ApiCallScheduler {
@@ -18,15 +18,26 @@ public class ApiCallScheduler {
     private BusDataRepository busDataRepository;
     private int apiCallounter = 1;
 
+    private List<ApiBusDataEntity> prevResponseBusData = new ArrayList<>();
+
     private static final Logger log = LoggerFactory.getLogger(ApiCallScheduler.class);
 
     @Scheduled(fixedRate = 10000)
     public void toBase() {
         ApiCall apiCall = new ApiCall("1", "131");
         List<ApiBusDataEntity> responseBusData = apiCall.makeCall();
-        for (ApiBusDataEntity apiBusDataEntity : responseBusData) {
+        List<ApiBusDataEntity> dbBusData = new ArrayList<>(responseBusData);
+        dbBusData.removeAll(prevResponseBusData);
+
+        log.debug("prevResponseBusData = " + prevResponseBusData);
+        log.debug("responseBusData____ = " + responseBusData);
+        log.debug("dbBusData__________ = " + dbBusData);
+
+        prevResponseBusData = new ArrayList<>(responseBusData);
+
+        for (ApiBusDataEntity apiBusDataEntity : dbBusData) {
             busDataRepository.save(new BusData(apiBusDataEntity));
         }
-        log.info("Api Call no: {}, entries: {}",this.apiCallounter++, responseBusData.size());
+        log.info("Api Call no: {}, response: {}, written: {}",this.apiCallounter++, responseBusData.size(), dbBusData.size());
     }
 }
