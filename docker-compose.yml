@@ -6,7 +6,7 @@ volumes:
 services:
   postgres_db:
     image: postgres:12
-    container_name: "postgres_BusDb"
+    container_name: "postgres_db"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -14,3 +14,8 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: dbpw
+  spring_app:
+    image: spring_img:latest
+    container_name: "springboot_app"
+    ports:
+      - "8080:8080"
