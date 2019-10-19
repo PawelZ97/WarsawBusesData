@@ -1,6 +1,3 @@
-#psql -h 172.20.0.2 -p 5432 -U postgres postgres
 gradle bootJar
-docker image build -t spring_img .
-docker stop springboot_app
-docker container rm springboot_app
+docker-compose build
 docker-compose up -d spring_app

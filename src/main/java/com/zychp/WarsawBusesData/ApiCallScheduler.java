@@ -38,6 +38,8 @@ public class ApiCallScheduler {
         for (ApiBusDataEntity apiBusDataEntity : dbBusData) {
             busDataRepository.save(new BusData(apiBusDataEntity));
         }
-        log.info("Api Call no: {}, response: {}, written: {}",this.apiCallounter++, responseBusData.size(), dbBusData.size());
+
+        log.info("Api Call no: {}, response: {}, written: {}",
+                this.apiCallounter++, responseBusData.size(), dbBusData.size());
     }
 }
