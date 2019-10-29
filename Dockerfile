@@ -1,6 +1,6 @@
-FROM openjdk:11
-COPY ./build/libs/WarsawBusesData-0.0.1-SNAPSHOT.jar /usr/app/
-COPY apiKey /usr/app
-WORKDIR /usr/app
+FROM openjdk:11-jre-slim
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "WarsawBusesData-0.0.1-SNAPSHOT.jar"]
+WORKDIR /usr/src/java-app
+COPY build/libs/*.jar ./app.jar
+COPY apiKey .
+ENTRYPOINT ["java", "-jar", "app.jar"]

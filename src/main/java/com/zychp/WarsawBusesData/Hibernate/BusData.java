@@ -44,4 +44,9 @@ public class BusData {
         this.lines = bus.getLines();
         this.brigade = bus.getBrigade();
     }
+
+    @Override
+    public String toString() {
+        return "Bus, " + time + ", " + lines + ", " + brigade;
+    }
 }
